@@ -2,6 +2,7 @@ package noonlight
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -9,9 +10,7 @@ import (
 	"time"
 )
 
-
-
-func newNoonlightClient(apiKey, baseURL string) *NoonlightClient {
+func NewNoonlightClient(apiKey, baseURL string) *NoonlightClient {
 	return &NoonlightClient{
 		APIKey:  apiKey,
 		BaseURL: baseURL,
@@ -22,7 +21,7 @@ func newNoonlightClient(apiKey, baseURL string) *NoonlightClient {
 }
 
 // TriggerAlarm - makes a request to noonlight to trigger an alarm
-func (c *NoonlightClient) TriggerAlarm(requestBody *TriggerAlarmRequestBody) (*TriggerAlarmResponse, error) {
+func (c *NoonlightClient) TriggerAlarm(ctx context.Context, requestBody *TriggerAlarmRequestBody) (*TriggerAlarmResponse, error) {
 	// Create the request body JSON
 	reqBody, err := json.Marshal(requestBody)
 	if err != nil {
@@ -66,7 +65,7 @@ type CancelAlarmResponse struct {
 }
 
 // CancelAlarm - updaets a triggered alar to be canceled.
-func (client *NoonlightClient) CancelAlarm(alarmID string) (*CancelAlarmResponse, error) {
+func (client *NoonlightClient) CancelAlarm(ctx context.Context, alarmID string) (*CancelAlarmResponse, error) {
 	url := fmt.Sprintf("%s/dispatch/v1/alarms/%s/status", client.BaseURL, alarmID)
 
 	requestBody := struct {
@@ -113,7 +112,7 @@ type GetAlarmStatusResponse struct {
 
 // ...
 
-func (c *NoonlightClient) GetAlarmStatus(alarmID string) (*GetAlarmStatusResponse, error) {
+func (c *NoonlightClient) GetAlarmStatus(ctx context.Context, alarmID string) (*GetAlarmStatusResponse, error) {
 	// Construct the URL for the GET request
 	url := fmt.Sprintf("%s/dispatch/v1/alarms/%s/status", c.BaseURL, alarmID)
 

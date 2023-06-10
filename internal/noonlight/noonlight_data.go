@@ -1,15 +1,16 @@
 package noonlight
 
 import (
+	"context"
 	"net/http"
 	"time"
 )
 
 // NoonlightAPI represents the client for interacting with the Noonlight API.
 type NoonlightAPI interface {
-	TriggerAlarm(address string) (*TriggerAlarmResponse, error)
-	CancelAlarm(alarmID string) (*CancelAlarmResponse, error)
-	GetAlarmStatus(alarmID string) (*GetAlarmStatusResponse, error)
+	TriggerAlarm(ctx context.Context, address string) (*TriggerAlarmResponse, error)
+	CancelAlarm(ctx context.Context, alarmID string) (*CancelAlarmResponse, error)
+	GetAlarmStatus(ctx context.Context, alarmID string) (*GetAlarmStatusResponse, error)
 }
 
 type TriggerAlarmRequestBody struct {

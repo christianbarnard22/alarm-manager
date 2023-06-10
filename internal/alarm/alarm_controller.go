@@ -24,15 +24,10 @@ type CreateAlarmResponse struct {
 
 // CreateAlarm creates a new alarm based on the provided request.
 func (h *AlarmHandler) CreateAlarm(ctx context.Context, req *CreateAlarmParams) (*CreateAlarmResponse, error) {
-	// logger := logging.GetLogger(ctx)
-
 	alarm, err := h.alarmService.CreateAlarm(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	// Store the alarm in the database or any other storage mechanism.
-	// Implement your storage logic here.
-	// ...
 
 	return &CreateAlarmResponse{
 		AlarmID: alarm.ID,
@@ -68,19 +63,6 @@ type CancelAlarmRequest struct {
 
 // CancelAlarm cancels the alarm based on the provided request.
 func (h *AlarmHandler) CancelAlarm(ctx context.Context, req *CancelAlarmRequest) error {
-	// Retrieve the alarm from the database or any other storage mechanism.
-	// Implement your retrieval logic here.
-	// alarm, err := h.alarmService.CancelAlarm(ctx, req.AlarmID)
-	// if err != nil {
-	// 	return .Error("Unable to cancel Alarm: ", err)
-	// }
-
-	// // Cancel the alarm.
-	// alarm.CancelAlarm()
-
-	// Store the updated alarm in the database or any other storage mechanism.
-	// Implement your storage logic here.
-	// ...
 
 	return nil
 }

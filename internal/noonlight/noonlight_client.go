@@ -20,8 +20,8 @@ func NewNoonlightClient(apiKey, baseURL string) *NoonlightClient {
 	}
 }
 
-// TriggerAlarm - makes a request to noonlight to trigger an alarm
-func (c *NoonlightClient) TriggerAlarm(ctx context.Context, requestBody *TriggerAlarmRequestBody) (*TriggerAlarmResponse, error) {
+// CreateAlarm - makes a request to noonlight to trigger an alarm
+func (c *NoonlightClient) CreateAlarm(ctx context.Context, requestBody *CreateAlarmRequestBody) (*CreateAlarmResponse, error) {
 	// Create the request body JSON
 	reqBody, err := json.Marshal(requestBody)
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *NoonlightClient) TriggerAlarm(ctx context.Context, requestBody *Trigger
 	}
 
 	// Unmarshal the response JSON
-	var alarmResponse TriggerAlarmResponse
+	var alarmResponse CreateAlarmResponse
 	err = json.Unmarshal(respBody, &alarmResponse)
 	if err != nil {
 		return nil, err

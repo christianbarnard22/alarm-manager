@@ -8,12 +8,12 @@ import (
 
 // NoonlightAPI represents the client for interacting with the Noonlight API.
 type NoonlightAPI interface {
-	TriggerAlarm(ctx context.Context, req TriggerAlarmResponse) (*TriggerAlarmResponse, error)
-	CancelAlarm(ctx context.Context, alarmID string) (*CancelAlarmResponse, error)
+	CreateAlarm(ctx context.Context, req CreateAlarmResponse) (*CreateAlarmResponse, error)
+	CancelAlarm(ctx context.Context, alarmID string) (string, error)
 	GetAlarmStatus(ctx context.Context, alarmID string) (*GetAlarmStatusResponse, error)
 }
 
-type TriggerAlarmRequestBody struct {
+type CreateAlarmRequestBody struct {
 	Name     string        `json:"name" validate:"required"`
 	Phone    string        `json:"phone" validate:"required"`
 	Location *LocationData `json:"location" validate:"required"`
@@ -38,7 +38,7 @@ type AddressData struct {
 	Zip   string `json:"zip" validate:"required"`
 }
 
-type TriggerAlarmResponse struct {
+type CreateAlarmResponse struct {
 	ID        string    `json:"id"`
 	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"created_at"`

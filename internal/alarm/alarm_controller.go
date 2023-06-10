@@ -51,7 +51,7 @@ type GetAlarmResponse struct {
 
 // GetAlarm retrieves the alarm based on the provided request.
 func (h *AlarmHandler) GetAlarm(ctx context.Context, req *GetAlarmRequest) (*GetAlarmResponse, error) {
-	alarm := h.alarmService.GetAlarm(ctx, req.AlarmID)
+	alarm := h.alarmService.GetAlarmStatus(ctx, req.AlarmID)
 	if alarm == nil {
 		return nil, fmt.Errorf("alarm not found")
 	}
@@ -70,13 +70,13 @@ type CancelAlarmRequest struct {
 func (h *AlarmHandler) CancelAlarm(ctx context.Context, req *CancelAlarmRequest) error {
 	// Retrieve the alarm from the database or any other storage mechanism.
 	// Implement your retrieval logic here.
-	alarm := h.alarmService.GetAlarm(ctx, req.AlarmID)
-	if alarm == nil {
-		return fmt.Errorf("alarm not found")
-	}
+	// alarm, err := h.alarmService.CancelAlarm(ctx, req.AlarmID)
+	// if err != nil {
+	// 	return .Error("Unable to cancel Alarm: ", err)
+	// }
 
-	// Cancel the alarm.
-	alarm.CancelAlarm()
+	// // Cancel the alarm.
+	// alarm.CancelAlarm()
 
 	// Store the updated alarm in the database or any other storage mechanism.
 	// Implement your storage logic here.

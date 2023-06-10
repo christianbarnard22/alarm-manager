@@ -11,8 +11,8 @@ import (
 // AlarmService represents the alarm service.
 type Alarm interface {
 	CreateAlarm(ctx context.Context, req *CreateAlarmParams) (*AlarmEvent, error)
-	GetAlarm(ctx context.Context, id string) *AlarmEvent
-	CancelAlarm(ctx context.Context, alarmId string) (*noonlight.CancelAlarmResponse, error)
+	GetAlarmStatus(ctx context.Context, id string) *AlarmEvent
+	CancelAlarm(ctx context.Context, alarmId string) (*AlarmEvent, error)
 }
 
 // alarmService is an implementation of the AlarmService interface.
@@ -46,7 +46,7 @@ func (s *AlarmService) CreateAlarm(ctx context.Context, req *CreateAlarmParams) 
 		return nil, err
 	}
 
-	noonlightReq := &noonlight.TriggerAlarmRequestBody{
+	noonlightReq := &noonlight.CreateAlarmRequestBody{
 		Name:  req.Name,
 		Phone: req.Phone,
 		Location: &noonlight.LocationData{
@@ -54,7 +54,7 @@ func (s *AlarmService) CreateAlarm(ctx context.Context, req *CreateAlarmParams) 
 		},
 	}
 
-	resp, err := s.NoonlightClient.TriggerAlarm(ctx, noonlightReq)
+	resp, err := s.NoonlightClient.CreateAlarm(ctx, noonlightReq)
 
 	if err != nil {
 		logger.Error("Failed to Trigger Alarm")
@@ -72,10 +72,25 @@ func (s *AlarmService) CreateAlarm(ctx context.Context, req *CreateAlarmParams) 
 }
 
 // RetrieveAlarm retrieves an alarm by its ID.
-func (s *AlarmService) GetAlarm(ctx context.Context, id string) *AlarmEvent {
+func (s *AlarmService) GetAlarmStatus(ctx context.Context, id string) *AlarmEvent {
 	return nil
 }
 
-func (s *AlarmService) CancelAlarm(ctx context.Context, alarmId string) (*noonlight.CancelAlarmResponse, error) {
-	return nil, nil
+func (s *AlarmService) CancelAlarm(ctx context.Context, alarmId string) (*AlarmEvent, error) {
+	logger := logging.GetLogger(ctx)
+	logger.Info("Canceling alarm")
+
+	resp, err := s.NoonlightClient.CancelAlarm(ctx, alarmId)
+	if err != nil {
+		logger.Error("Error Canceling alarm", err)
+		return nil, err
+	}
+
+	alarmevent := &AlarmEvent{
+		ID:          alarmId,
+		TriggeredAt: resp.CreatedAt,
+		Status:      resp.Status,
+	}
+
+	return alarmevent, nil
 }

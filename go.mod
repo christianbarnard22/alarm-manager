@@ -1,6 +1,6 @@
 module github.com/christianbarnard22/alarm-manager
 
-go 1.17
+go 1.20
 
 require (
 	github.com/go-playground/validator/v10 v10.14.1

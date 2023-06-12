@@ -38,8 +38,6 @@ func (s *AlarmService) CreateAlarm(ctx context.Context, req *CreateAlarmParams) 
 	// make sure to provide name, Phone number, location object with address
 	logger := logging.GetLogger(ctx)
 
-	logger.Info("Creating alarm")
-
 	err := validator.ValidateStruct(req)
 	if err != nil {
 		logger.Warn("Warning: Alarm creation failed!", err)
@@ -67,7 +65,7 @@ func (s *AlarmService) CreateAlarm(ctx context.Context, req *CreateAlarmParams) 
 		TriggeredAt: resp.CreatedAt,
 	}
 
-	logger.Info("Alarm successfully trggered")
+	logger.Info("Alarm successfully created")
 	return alarmevent, nil
 }
 
@@ -78,7 +76,6 @@ func (s *AlarmService) GetAlarmStatus(ctx context.Context, id string) *AlarmEven
 
 func (s *AlarmService) CancelAlarm(ctx context.Context, alarmId string) (*AlarmEvent, error) {
 	logger := logging.GetLogger(ctx)
-	logger.Info("Canceling alarm")
 
 	resp, err := s.NoonlightClient.CancelAlarm(ctx, alarmId)
 	if err != nil {
@@ -91,6 +88,6 @@ func (s *AlarmService) CancelAlarm(ctx context.Context, alarmId string) (*AlarmE
 		TriggeredAt: resp.CreatedAt,
 		Status:      resp.Status,
 	}
-
+	logger.Info("Alarm canceled")
 	return alarmevent, nil
 }
